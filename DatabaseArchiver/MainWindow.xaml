@@ -15,17 +15,19 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="134,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="259" Text="{Binding Server}"/>
         <TextBox x:Name="database" HorizontalAlignment="Left" Height="23" Margin="134,98,0,0" TextWrapping="Wrap" Text="{Binding Database}" VerticalAlignment="Top" Width="259"/>
         <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="134,128,0,0" TextWrapping="Wrap" Text="{Binding User}" VerticalAlignment="Top" Width="259"/>
-        <PasswordBox x:Name="password" HorizontalAlignment="Left"  Margin="134,156,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.577,-0.418" Width="258" Height="24" PasswordChanged="password_PasswordChanged">
+        <PasswordBox x:Name="password" HorizontalAlignment="Left"  Margin="135,196,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.577,-0.418" Width="258" Height="24" PasswordChanged="password_PasswordChanged">
         </PasswordBox>
 
 
         <Label x:Name="dbLabel" Content="Database" HorizontalAlignment="Left" Margin="66.704,94,0,0" VerticalAlignment="Top" Grid.Column="1"/>
         <Label x:Name="userLabel" Content="Username" HorizontalAlignment="Left" Margin="66.704,125,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <Label x:Name="passwordLbl" Content="Password" HorizontalAlignment="Left" Margin="66.704,151,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <Button Content="Archive It!" HorizontalAlignment="Left" Margin="134,207,0,0" VerticalAlignment="Top" Width="75" Command="{Binding ArchiveCommand, Mode=OneWay}"/>
-        <Button x:Name="loadIt" Content="Load It!" HorizontalAlignment="Left" Margin="318,207,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label x:Name="passwordLbl" Content="Password" HorizontalAlignment="Left" Margin="68,191,0,0" VerticalAlignment="Top"/>
+        <Button Content="Archive It!" HorizontalAlignment="Left" Margin="134,225,0,0" VerticalAlignment="Top" Width="75" Command="{Binding ArchiveCommand, Mode=OneWay}"/>
+        <Button x:Name="loadIt" Content="Load It!" HorizontalAlignment="Left" Margin="318,225,0,0" VerticalAlignment="Top" Width="75"/>
 
         <Label x:Name="serverLabel" Content="Server" HorizontalAlignment="Left" Margin="67,63,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="outputLocation" HorizontalAlignment="Left" Height="23" Margin="135,156,0,0" TextWrapping="Wrap" Text="{Binding OutputLocation}" VerticalAlignment="Top" Width="259"/>
+        <Label x:Name="outLocationLabel" Content="Output Loc" HorizontalAlignment="Left" Margin="63,156,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

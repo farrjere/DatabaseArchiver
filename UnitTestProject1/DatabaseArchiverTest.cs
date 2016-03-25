@@ -15,7 +15,7 @@ namespace UnitTestProject1
         {
             List<string> tables = new List<string>();
             tables.Add("[HumanResources].[Department]");
-            DatabaseArchiver archiver = new DatabaseArchiver("Data Source=JEREMY-PC\\LOCALHOST;Initial Catalog=AdventureWorks2014;User ID=sa;Password=password", tables);
+            DatabaseArchiver archiver = new DatabaseArchiver("C:\\tmp", "Data Source=JEREMY-PC\\LOCALHOST;Initial Catalog=AdventureWorks2014;User ID=sa;Password=password", tables);
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace UnitTestProject1
             SecureString s = new SecureString();
             foreach(char c in "password") { s.AppendChar(c); }
             s.MakeReadOnly();
-            DatabaseArchiver archiver = new DatabaseArchiver("JEREMY-PC\\LOCALHOST", "AdventureWorks2014", "sa", s);
+            DatabaseArchiver archiver = new DatabaseArchiver("C:\\tmp", "JEREMY-PC\\LOCALHOST", "AdventureWorks2014", "sa", s);
         }
 
         [TestMethod]

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Farrellcrafts.DatabaseArchiver
@@ -26,11 +28,31 @@ namespace Farrellcrafts.DatabaseArchiver
         public string Server { get; set; }
         public string Database { get; set; }
         public string User { get; set; }
+        public string OutputLocation { get; set; }
         public SecureString Password { get; set; }
 
         public void ArchiveDatabase() {
-            Password.MakeReadOnly();
-            DatabaseArchiver archiver = new DatabaseArchiver(Server, Database, User, Password);
+            
+            if (!String.IsNullOrEmpty(Server) && !String.IsNullOrEmpty(Database) 
+                && !String.IsNullOrEmpty(User) 
+                && !String.IsNullOrEmpty(OutputLocation) 
+                && Directory.Exists(OutputLocation))
+            {
+                Password.MakeReadOnly();
+                try
+                {
+                    DatabaseArchiver archiver = new DatabaseArchiver(OutputLocation, Server, Database, User, Password);
+                    MessageBox.Show("Done archiving the database");
+                }catch(Exception e)
+                {
+                    MessageBox.Show("Error happend during processing");
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Please provide valid input");
+            }
         }
 
         class ClickCommand : ICommand

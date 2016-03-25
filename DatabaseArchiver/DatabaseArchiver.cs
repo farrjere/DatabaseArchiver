@@ -15,8 +15,10 @@ namespace Farrellcrafts.DatabaseArchiver
         private string connection;
         private string database;
         private SqlCredential credential;
+        private string outputDir;
         private List<string> tables = new List<string>();
-        public DatabaseArchiver(string server, string database, string user, SecureString password) {
+        public DatabaseArchiver(string outputLocation, string server, string database, string user, SecureString password) {
+            outputDir = outputLocation;
             SetConnection(server, database);
             SetCredential(user, password);
             ObtainTables();
@@ -24,8 +26,9 @@ namespace Farrellcrafts.DatabaseArchiver
         }
 
         //Test constructor
-        public DatabaseArchiver(string connection, List<string> tables)
+        public DatabaseArchiver(string outputLocation, string connection, List<string> tables)
         {
+            outputDir = outputLocation;
             this.tables.AddRange(tables);
             this.connection = connection;
             ArchiveTables();
@@ -74,7 +77,7 @@ namespace Farrellcrafts.DatabaseArchiver
                     }
                     
                 }
-                zipFile.Save("C:\\tmp\\" + database + ".zip");
+                zipFile.Save(outputDir +"\\"+ database + ".zip");
             }
         }
     }
