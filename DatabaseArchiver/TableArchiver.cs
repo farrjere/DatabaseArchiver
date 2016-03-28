@@ -22,11 +22,11 @@ namespace Farrellcrafts.DatabaseArchiver
 
         public void AddTableToArchive()
         {
-            DataTable dt = readDataTable();
+            DataTable dt = ReadDataTable();
             zip.AddEntry(table+".csv", (name, stream) => WriteDataTableToStream(dt, stream));
         }
 
-        private DataTable readDataTable()
+        private DataTable ReadDataTable()
         {
             DataTable dt = new DataTable();
             using(SqlConnection conn = new SqlConnection(connection))
@@ -60,7 +60,8 @@ namespace Farrellcrafts.DatabaseArchiver
         {
             for (int col = 0; col < dt.Columns.Count; col++)
             {
-                writer.Write(dt.Columns[col].ColumnName);
+                var column = dt.Columns[col];
+                writer.Write(column.ColumnName+":"+column.DataType.ToString());
                 if (col < dt.Columns.Count - 1)
                 {
                     writer.Write(",");

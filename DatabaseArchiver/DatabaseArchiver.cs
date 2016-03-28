@@ -59,25 +59,57 @@ namespace Farrellcrafts.DatabaseArchiver
                 }
             }
         }
-        
+
         private void ArchiveTables()
         {
-            using(ZipFile zipFile = new ZipFile())
+            using (ZipFile zipFile = new ZipFile())
             {
-                foreach(string table in tables)
+                foreach (string table in tables)
                 {
                     try
                     {
                         TableArchiver archiver = new TableArchiver(table, zipFile, connection, credential);
                         archiver.AddTableToArchive();
-                    }catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Console.WriteLine("Crap failed to write " + table);
                         Console.WriteLine(e.StackTrace);
                     }
-                    
+
                 }
-                zipFile.Save(outputDir +"\\"+ database + ".zip");
+                zipFile.Save(outputDir + "\\" + database + ".zip");
+            }
+        }
+
+        private void ThreadedArchiveTables()
+        {
+            using(ZipFile zipFile = new ZipFile())
+            {
+                Task[] taskArray = new Task[tables.Count-1];
+                for (int i = 0; i < taskArray.Length; i++)
+                {
+                    taskArray[i] = Task.Run(() => AddTable(tables[i], zipFile));
+                }
+                Task.WaitAll(taskArray);
+                zipFile.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
+                zipFile.Save(outputDir + "\\" + database + ".zip");
+            }
+            
+        }
+
+        private void AddTable(string table, ZipFile zip)
+        {
+            try
+            {
+                TableArchiver archiver = new TableArchiver(table, zip, connection, credential);
+                archiver.AddTableToArchive();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Crap failed to write " + table);
+                Console.WriteLine(e.StackTrace);
             }
         }
     }

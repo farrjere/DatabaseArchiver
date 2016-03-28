@@ -13,15 +13,25 @@ namespace Farrellcrafts.DatabaseArchiver
     public class ArchiverViewModel
     {
         private ICommand _archiveCommand;
-        
+        private ICommand _loadCommand;
         
         public ArchiverViewModel() {
             _archiveCommand = new ClickCommand(ArchiveDatabase);
+            _loadCommand = new ClickCommand(LoadDatabase);
         }
+
         public ICommand ArchiveCommand{
             get
             {
                 return _archiveCommand;
+            }
+        }
+
+        public ICommand LoadCommand
+        {
+            get
+            {
+                return _loadCommand;
             }
         }
 
@@ -32,22 +42,59 @@ namespace Farrellcrafts.DatabaseArchiver
         public SecureString Password { get; set; }
 
         public void ArchiveDatabase() {
-            
-            if (!String.IsNullOrEmpty(Server) && !String.IsNullOrEmpty(Database) 
-                && !String.IsNullOrEmpty(User) 
-                && !String.IsNullOrEmpty(OutputLocation) 
-                && Directory.Exists(OutputLocation))
+            ValidateInput(() =>
             {
-                Password.MakeReadOnly();
+                if (!Directory.Exists(OutputLocation))
+                {
+                    Directory.CreateDirectory(OutputLocation);
+                }
                 try
                 {
                     DatabaseArchiver archiver = new DatabaseArchiver(OutputLocation, Server, Database, User, Password);
                     MessageBox.Show("Done archiving the database");
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     MessageBox.Show("Error happend during processing");
+                    Console.WriteLine(e.StackTrace);
                 }
-                
+            });
+            
+        }
+
+        public void LoadDatabase()
+        {
+            ValidateInput(() =>
+            {
+                bool fileExists = File.Exists(@"‪C:\tmp\AdventureWorks2014.zip");
+
+                if (!File.Exists(OutputLocation))
+                {
+                    MessageBox.Show("The given file does not exist");
+                }
+                else {
+                    try
+                    {
+                        DatabaseLoader loader = new DatabaseLoader(OutputLocation, Server, Database, User, Password);
+                        MessageBox.Show("Done loading the database");
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Error happend during processing");
+                        Console.WriteLine(e.StackTrace);
+                    }
+                }
+            });
+        }
+
+        private void ValidateInput(Action action)
+        {
+            if (!String.IsNullOrEmpty(Server) && !String.IsNullOrEmpty(Database)
+                && !String.IsNullOrEmpty(User)
+                && !String.IsNullOrEmpty(OutputLocation))
+            {
+                Password.MakeReadOnly();
+                action();
             }
             else
             {
